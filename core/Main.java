@@ -43,29 +43,29 @@ public class Main {
 			"2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015",
 			"2016", "2017", "2018", "2019" };
 
-	private static String foods[] = {"Royal Canin Exigent", "Royal Canin Cat Premium Filhotes", "Farmina N&D", "Premier Pet Golden Gatos Castrados", 
-			"Purina ProPlan Trato Urinário", "GranPlus Adultos", "Ração Biofresh Gatos", "Nutrilus Pro gatos", "Guabi Natural gato adulto castrado"};
-	
+	private static String foods[] = { "Royal Canin Exigent", "Royal Canin Cat Premium Filhotes", "Farmina N&D",
+			"Premier Pet Golden Gatos Castrados",
+			"Purina ProPlan Trato Urinário", "GranPlus Adultos", "Ração Biofresh Gatos", "Nutrilus Pro gatos",
+			"Guabi Natural gato adulto castrado" };
+
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(() -> {
 			// Instanciar as duas janelas
 			AdopterWindow AdopterWindow = new AdopterWindow();
 			CadastrarGatoWindow CadastrarGatoWindow = new CadastrarGatoWindow();
-			AdotarGatoWindow AdotarGatoWindow = new AdotarGatoWindow();		
-			
+			AdotarGatoWindow AdotarGatoWindow = new AdotarGatoWindow();
+
 			// Configurar a barra de navegação (nav bar)
 			JMenuBar menuBar = new JMenuBar();
 			menuBar.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 			// Menu Cadastros
 			JMenu cadastrosMenu = new JMenu("Cadastros");
-			
+
 			JMenuItem AdopterMenuItem = new JMenuItem("Cadastro de Adotador");
 			JMenuItem CadastroGatoMenuItem = new JMenuItem("Cadastro para Adotar Gato");
-			
-			
-			
+
 			AdopterMenuItem.addActionListener(e -> {
 				AdopterWindow.setVisible(true);
 				CadastrarGatoWindow.setVisible(false);
@@ -75,12 +75,9 @@ public class Main {
 				AdopterWindow.setVisible(false);
 				CadastrarGatoWindow.setVisible(true);
 			});
-			
-		
 
 			cadastrosMenu.add(AdopterMenuItem);
 			cadastrosMenu.add(CadastroGatoMenuItem);
-			
 
 			menuBar.add(cadastrosMenu);
 
@@ -89,7 +86,6 @@ public class Main {
 
 			JMenuItem consulta1MenuItem = new JMenuItem("Consultar Adotantes");
 			JMenuItem consulta2MenuItem = new JMenuItem("Consultar Gatos");
-			
 
 			consulta1MenuItem.addActionListener(e -> {
 				consultarAdopters();
@@ -103,61 +99,57 @@ public class Main {
 			consultasMenu.add(consulta2MenuItem);
 
 			menuBar.add(consultasMenu);
-			
+
 			// Menu adoção
 			JMenu AdotarMenu = new JMenu("Adotar Gato");
 
 			JMenuItem adotarGatoMenuItem = new JMenuItem("Cadastro para Adotar Gato");
-
 
 			adotarGatoMenuItem.addActionListener(e -> {
 				AdopterWindow.setVisible(false);
 				AdotarGatoWindow.setVisible(true);
 			});
 
-
 			AdotarMenu.add(adotarGatoMenuItem);
-			
 
 			menuBar.add(AdotarMenu);
-			
+
 			frame = new JFrame("Sistema de Adoção");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(800, 700);
 			frame.setJMenuBar(menuBar);
 			frame.setVisible(true);
-			
+
 			// Menu relatório
 			JMenu relatorioMenu = new JMenu("Relatórios");
-			
+
 			JMenuItem relatorioPMenuItem = new JMenuItem("Relatório Provisões");
 			JMenuItem relatorioCMenuItem = new JMenuItem("Relatório de gatos");
 
 			relatorioPMenuItem.addActionListener(e -> {
 				relatorioProvisoes();
 			});
-			
+
 			relatorioCMenuItem.addActionListener(e -> {
 				relatorioCat();
 			});
-			
+
 			relatorioMenu.add(relatorioPMenuItem);
 			relatorioMenu.add(relatorioCMenuItem);
 
-
 			menuBar.add(relatorioMenu);
-			
+
 			frame = new JFrame("Sistema de Adoção");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setSize(800, 700);
 			frame.setJMenuBar(menuBar);
 			frame.setVisible(true);
-			
+
 		});
 	}
 
 	public static class AdopterWindow extends JFrame implements ActionListener {
-		
+
 		private static final long serialVersionUID = 1L;
 		private JLabel nameLabel;
 		private JTextField nameTextField;
@@ -173,7 +165,7 @@ public class Main {
 		private JTextField telefoneTextField;
 
 		public AdopterWindow() {
-			
+
 			setTitle("Adopter Registration");
 			setSize(800, 700);
 			setLayout(new BorderLayout());
@@ -221,13 +213,12 @@ public class Main {
 			telefoneTextField.setMaximumSize(new Dimension(200, 25));
 			formPanel.add(telefoneLabel);
 			formPanel.add(telefoneTextField);
-			
-			
+
 			JButton cadastrarButton = new JButton("Register");
-			cadastrarButton.addActionListener(this);			
+			cadastrarButton.addActionListener(this);
 			formPanel.add(cadastrarButton);
 			formPanel.add(cadastrarButton);
-	
+
 			mainPanel.add(formPanel);
 			add(mainPanel);
 		}
@@ -243,7 +234,7 @@ public class Main {
 			String telefone = telefoneTextField.getText();
 
 			Adopter Adopter = new Adopter(cpf, name, endereco, telefone, dob);
-			System.out.println("1 - "+ Adopter);
+			System.out.println("1 - " + Adopter);
 			adopters.add(Adopter);
 
 			JOptionPane.showMessageDialog(this, "Adotador cadastrado com sucesso!" + Adopter.toString());
@@ -268,7 +259,6 @@ public class Main {
 		private JComboBox<String> dayInComboBox;
 		private JComboBox<String> monthInComboBox;
 		private JComboBox<String> yearInComboBox;
-	
 
 		public CadastrarGatoWindow() {
 			setTitle("Cat Registration");
@@ -338,14 +328,11 @@ public class Main {
 			formPanel.add(weightTextField);
 
 			mainPanel.add(formPanel);
-			
-			
+
 			JButton cadastrarButton = new JButton("Register");
 			cadastrarButton.addActionListener(this);
 
 			mainPanel.add(cadastrarButton);
-
-		
 
 			add(mainPanel);
 		}
@@ -354,7 +341,7 @@ public class Main {
 		public void actionPerformed(ActionEvent e) {
 			// Lógica para tratar o evento do botão de cadastrar
 			Cat cat = criarCat();
-			System.out.println("1 - "+ cat);
+			System.out.println("1 - " + cat);
 
 			cats.add(cat);
 
@@ -370,12 +357,11 @@ public class Main {
 			surnameTextField.setText("");
 			genderTextField.setText("");
 			ageTextField.setText("");
-			
+
 			quantityFoodTextField.setText("");
 			weightTextField.setText("");
-			
+
 		}
-		
 
 		private Cat criarCat() {
 			String singleCode = singleCodeTextField.getText();
@@ -401,13 +387,14 @@ public class Main {
 		}
 
 	}
+
 	static class AdotarGatoWindow extends JFrame implements ActionListener {
 		private JTextField singleCodeTextField;
 		private JTextField cpfAdopteTextField;
 		private JComboBox<String> dayOutComboBox;
 		private JComboBox<String> monthOutComboBox;
 		private JComboBox<String> yearOutComboBox;
-		
+
 		public AdotarGatoWindow() {
 			setTitle("Adopt Cat Registration");
 			setSize(800, 700);
@@ -422,35 +409,30 @@ public class Main {
 			singleCodeTextField = new JTextField(20);
 			formPanel.add(singleCodeLabel);
 			formPanel.add(singleCodeTextField);
-			
-			
+
 			JLabel cpfAdopteLabel = new JLabel("CPF do Adotante");
-            cpfAdopteTextField = new JTextField(20);
-            formPanel.add(cpfAdopteLabel);
-            formPanel.add(cpfAdopteTextField);
-			
+			cpfAdopteTextField = new JTextField(20);
+			formPanel.add(cpfAdopteLabel);
+			formPanel.add(cpfAdopteTextField);
 
 			JLabel dobOutLabel = new JLabel("Date Out");
-            JPanel dobOutPanel = new JPanel(new BorderLayout());
-            dayOutComboBox = new JComboBox<>(dates);
-            monthOutComboBox = new JComboBox<>(months);
-            yearOutComboBox = new JComboBox<>(years);
-            dobOutPanel.add(dayOutComboBox, BorderLayout.WEST);
-            dobOutPanel.add(monthOutComboBox, BorderLayout.CENTER);
-            dobOutPanel.add(yearOutComboBox, BorderLayout.EAST);
-            
-            formPanel.add(dobOutLabel);
-            formPanel.add(dobOutPanel);
+			JPanel dobOutPanel = new JPanel(new BorderLayout());
+			dayOutComboBox = new JComboBox<>(dates);
+			monthOutComboBox = new JComboBox<>(months);
+			yearOutComboBox = new JComboBox<>(years);
+			dobOutPanel.add(dayOutComboBox, BorderLayout.WEST);
+			dobOutPanel.add(monthOutComboBox, BorderLayout.CENTER);
+			dobOutPanel.add(yearOutComboBox, BorderLayout.EAST);
+
+			formPanel.add(dobOutLabel);
+			formPanel.add(dobOutPanel);
 
 			mainPanel.add(formPanel);
-			
-			
+
 			JButton cadastrarButton = new JButton("Register");
 			cadastrarButton.addActionListener(this);
 
 			mainPanel.add(cadastrarButton);
-
-		
 
 			add(mainPanel);
 		}
@@ -461,14 +443,13 @@ public class Main {
 			String cpfAdopte = cpfAdopteTextField.getText();
 			String dayOut = (String) dayOutComboBox.getSelectedItem();
 			String monthOut = (String) monthOutComboBox.getSelectedItem();
-			String yearOut = (String) yearOutComboBox.getSelectedItem();			
+			String yearOut = (String) yearOutComboBox.getSelectedItem();
 			String exitDate = dayOut + "/" + monthOut + "/" + yearOut;
-			
-			
-			Cat cat = CatMethods.searchCat(singleCode,  cats);
-			if (cat != null) {		
+
+			Cat cat = CatMethods.searchCat(singleCode, cats);
+			if (cat != null) {
 				Adopter buscaAdopter = AdopterMethods.searchAdopter(cpfAdopte, adopters);
-				if (buscaAdopter != null) {					
+				if (buscaAdopter != null) {
 					cat.setCpfAdopter(cpfAdopte);
 					cat.setExitDate(exitDate);
 					JOptionPane.showMessageDialog(frame, cat.toString());
@@ -476,14 +457,14 @@ public class Main {
 				} else {
 					JOptionPane.showMessageDialog(frame, "Adopter não encontrado");
 					System.out.println("Adotador não encontrado");
-				}	
+				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "Gato não encontrado");
 				System.out.println("Gato não encontrado");
-			}			
-		}				
+			}
+		}
 	}
-	
+
 	private static void consultarAdopters() {
 		String cpfAdopter = JOptionPane.showInputDialog(frame, "CPF do Adopter:");
 		AdopterMethods AdopterMethods = new AdopterMethods();
@@ -508,19 +489,20 @@ public class Main {
 			System.out.println("O usuário tentou consultar um gato que não está registrado no sistema!");
 		}
 	}
-	
+
 	private static void relatorioCat() {
 		relatorio = CatMethods.relatorioCat(cats, relatorio);
-		
+
 		StringBuilder sb = new StringBuilder();
-	    for (Cat cat : relatorio) {
-	        sb.append(cat.toString()).append("\n"); // Aqui, você pode ajustar o formato de exibição de acordo com os atributos do objeto Cat
-	    }	    
+		for (Cat cat : relatorio) {
+			sb.append(cat.toString()).append("\n"); // Aqui, você pode ajustar o formato de exibição de acordo com os
+													// atributos do objeto Cat
+		}
 		JOptionPane.showMessageDialog(frame, sb.toString());
 		System.out.println(relatorio);
-		
+
 	}
-	
+
 	private static void relatorioProvisoes() {
 		relatorio = CatMethods.relatorioCat(cats, relatorio);
 		Double RoyalCaninExigent = 0.0;
@@ -532,43 +514,46 @@ public class Main {
 		Double RaçãoBiofreshGatos = 0.0;
 		Double NutrilusProgatos = 0.0;
 		Double GuabiNaturalgatoadultocastrado = 0.0;
-		
-		
+
 		for (Cat cat : relatorio) {
-			if (cat.getFood().equals("Royal Canin Exigent")){
+			if (cat.getFood().equals("Royal Canin Exigent")) {
 				RoyalCaninExigent += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Royal Canin Cat Premium Filhotes")){
+			if (cat.getFood().equals("Royal Canin Cat Premium Filhotes")) {
 				RoyalCaninCatPremiumFilhotes += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Farmina N&D")){
+			if (cat.getFood().equals("Farmina N&D")) {
 				FarminaND += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Premier Pet Golden Gatos Castrados")){
+			if (cat.getFood().equals("Premier Pet Golden Gatos Castrados")) {
 				PremierPetGoldenGatosCastrados += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Purina ProPlan Trato Urinário")){
+			if (cat.getFood().equals("Purina ProPlan Trato Urinário")) {
 				PurinaProPlanTratoUrinário += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("GranPlus Adultos")){
+			if (cat.getFood().equals("GranPlus Adultos")) {
 				GranPlusAdultos += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Ração Biofresh Gatos")){
+			if (cat.getFood().equals("Ração Biofresh Gatos")) {
 				RaçãoBiofreshGatos += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Nutrilus Pro gatos")){
+			if (cat.getFood().equals("Nutrilus Pro gatos")) {
 				NutrilusProgatos += Double.parseDouble(cat.getQuantityFood());
 			}
-			if (cat.getFood().equals("Guabi Natural gato adulto castrado")){
+			if (cat.getFood().equals("Guabi Natural gato adulto castrado")) {
 				GuabiNaturalgatoadultocastrado += Double.parseDouble(cat.getQuantityFood());
-			}						
+			}
 		}
-		String formated = "Royal Canin Exigent: " + RoyalCaninExigent + "\nRoyal Canin Cat Premium Filhotes: " + RoyalCaninCatPremiumFilhotes + 
-				"\nFarmina N&D: " + FarminaND + "\nPremier Pet Golden Gatos Castrados: " + PremierPetGoldenGatosCastrados + 
-				"\nPurina ProPlan Trato Urinário: "+ PurinaProPlanTratoUrinário + "\nGranPlus Adultos: " + GranPlusAdultos + "\nRação Biofresh Gatos: " + RaçãoBiofreshGatos +
-				"\nNutrilus Pro gatos: "+ NutrilusProgatos +"\nGuabi Natural gato adulto castrado: " + NutrilusProgatos; 
-		
+		String formated = "Royal Canin Exigent: " + RoyalCaninExigent + "\nRoyal Canin Cat Premium Filhotes: "
+				+ RoyalCaninCatPremiumFilhotes +
+				"\nFarmina N&D: " + FarminaND + "\nPremier Pet Golden Gatos Castrados: "
+				+ PremierPetGoldenGatosCastrados +
+				"\nPurina ProPlan Trato Urinário: " + PurinaProPlanTratoUrinário + "\nGranPlus Adultos: "
+				+ GranPlusAdultos + "\nRação Biofresh Gatos: " + RaçãoBiofreshGatos +
+				"\nNutrilus Pro gatos: " + NutrilusProgatos + "\nGuabi Natural gato adulto castrado: "
+				+ NutrilusProgatos;
+
 		JOptionPane.showMessageDialog(frame, formated);
-		
+
 	}
 }
