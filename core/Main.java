@@ -66,7 +66,7 @@ public class Main extends ClassLoader {
 
 			// Menu Cadastros
 			JMenu cadastrosMenu = new JMenu("Cadastros");
-
+			
 			JMenuItem AdopterMenuItem = new JMenuItem("Cadastro de Adotador");
 			JMenuItem CadastroGatoMenuItem = new JMenuItem("Cadastro de Gato");
 
