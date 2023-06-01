@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -26,8 +27,9 @@ import core.methods.AdopterMethods;
 import core.methods.CatMethods;
 import entites.Adopter;
 import entites.Cat;
+import exceptions.ErrorInput;
 
-public class Main {
+public class Main extends ClassLoader {
 
 	private static List<Cat> cats = new ArrayList<>();
 	private static List<Adopter> adopters = new ArrayList<>();
@@ -44,9 +46,10 @@ public class Main {
 			"2016", "2017", "2018", "2019" };
 
 	private static String foods[] = { "Royal Canin Exigent", "Royal Canin Cat Premium Filhotes", "Farmina N&D",
-			"Premier Pet Golden Gatos Castrados",
-			"Purina ProPlan Trato Urinário", "GranPlus Adultos", "Ração Biofresh Gatos", "Nutrilus Pro gatos",
-			"Guabi Natural gato adulto castrado" };
+			"Premier Pet Golden Gatos Castrados", "Purina ProPlan Trato Urinário", "GranPlus Adultos",
+			"Ração Biofresh Gatos", "Nutrilus Pro gatos", "Guabi Natural gato adulto castrado" };
+
+	private static String genders[] = { "Macho", "Fêmea" };
 
 	public static void main(String[] args) {
 
@@ -55,6 +58,7 @@ public class Main {
 			AdopterWindow AdopterWindow = new AdopterWindow();
 			CadastrarGatoWindow CadastrarGatoWindow = new CadastrarGatoWindow();
 			AdotarGatoWindow AdotarGatoWindow = new AdotarGatoWindow();
+			SobreWindow SobreWindow = new SobreWindow();
 
 			// Configurar a barra de navegação (nav bar)
 			JMenuBar menuBar = new JMenuBar();
@@ -64,7 +68,7 @@ public class Main {
 			JMenu cadastrosMenu = new JMenu("Cadastros");
 
 			JMenuItem AdopterMenuItem = new JMenuItem("Cadastro de Adotador");
-			JMenuItem CadastroGatoMenuItem = new JMenuItem("Cadastro para Adotar Gato");
+			JMenuItem CadastroGatoMenuItem = new JMenuItem("Cadastro de Gato");
 
 			AdopterMenuItem.addActionListener(e -> {
 				AdopterWindow.setVisible(true);
@@ -103,7 +107,7 @@ public class Main {
 			// Menu adoção
 			JMenu AdotarMenu = new JMenu("Adotar Gato");
 
-			JMenuItem adotarGatoMenuItem = new JMenuItem("Cadastro para Adotar Gato");
+			JMenuItem adotarGatoMenuItem = new JMenuItem("Adotar Gato");
 
 			adotarGatoMenuItem.addActionListener(e -> {
 				AdopterWindow.setVisible(false);
@@ -114,16 +118,10 @@ public class Main {
 
 			menuBar.add(AdotarMenu);
 
-			frame = new JFrame("Sistema de Adoção");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(800, 700);
-			frame.setJMenuBar(menuBar);
-			frame.setVisible(true);
-
 			// Menu relatório
 			JMenu relatorioMenu = new JMenu("Relatórios");
 
-			JMenuItem relatorioPMenuItem = new JMenuItem("Relatório Provisões");
+			JMenuItem relatorioPMenuItem = new JMenuItem("Relatório de Provisões");
 			JMenuItem relatorioCMenuItem = new JMenuItem("Relatório de gatos");
 
 			relatorioPMenuItem.addActionListener(e -> {
@@ -139,10 +137,25 @@ public class Main {
 
 			menuBar.add(relatorioMenu);
 
+			// Sobre
+			JMenu SobreMenu = new JMenu("Sobre");
+
+			JMenuItem sobre1MenuItem = new JMenuItem("Sobre");
+
+			sobre1MenuItem.addActionListener(e -> {
+				SobreWindow.setVisible(true);
+			});
+
+			SobreMenu.add(sobre1MenuItem);
+
+			menuBar.add(SobreMenu);
+
 			frame = new JFrame("Sistema de Adoção");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(800, 700);
+			frame.setSize(1600, 900);
 			frame.setJMenuBar(menuBar);
+			frame.add(new JLabel(new ImageIcon(
+					"C:\\Users\\Leu\\Documents\\códigos java diversos\\aps_v2\\Java-AdocaoDeGato\\core\\gatoA1.jpeg")));
 			frame.setVisible(true);
 
 		});
@@ -163,6 +176,7 @@ public class Main {
 		private JComboBox<String> yearComboBox;
 		private JLabel telefoneLabel;
 		private JTextField telefoneTextField;
+		ErrorInput imprimirError = new ErrorInput();
 
 		public AdopterWindow() {
 
@@ -225,7 +239,7 @@ public class Main {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// Lógica para salvar o adotador na lista
+
 			String name = nameTextField.getText();
 			String cpf = cpfTextField.getText();
 			String endereco = enderecoTextField.getText();
@@ -233,8 +247,23 @@ public class Main {
 					+ " " + yearComboBox.getSelectedItem().toString();
 			String telefone = telefoneTextField.getText();
 
+			if (cpf.isEmpty() || name.isEmpty()) {
+				imprimirError.exibirMensagemError("Preencha os dados corretamente.");
+				return;
+			}
+			if (!isNumber(cpf)) {
+				imprimirError.exibirMensagemError("Dados inválidos.");
+				return;
+			}
+			for (Adopter adopter : adopters) {
+				if (adopter.getCpf().equals(cpf)) {
+					imprimirError.exibirMensagemError("CPF já cadastrado.");
+					cpfTextField.setText("");
+					return;
+				}
+			}
+
 			Adopter Adopter = new Adopter(cpf, name, endereco, telefone, dob);
-			System.out.println("1 - " + Adopter);
 			adopters.add(Adopter);
 
 			JOptionPane.showMessageDialog(this, "Adotador cadastrado com sucesso!" + Adopter.toString());
@@ -251,17 +280,18 @@ public class Main {
 		private JTextField nameTextField;
 		private JTextField raceTextField;
 		private JTextField surnameTextField;
-		private JTextField genderTextField;
 		private JTextField ageTextField;
 		private JComboBox<String> foodTextField;
+		private JComboBox<String> genderTextField;
 		private JTextField quantityFoodTextField;
 		private JTextField weightTextField;
 		private JComboBox<String> dayInComboBox;
 		private JComboBox<String> monthInComboBox;
 		private JComboBox<String> yearInComboBox;
+		ErrorInput imprimirError = new ErrorInput();
 
 		public CadastrarGatoWindow() {
-			setTitle("Cat Registration");
+			setTitle("Cadastrar Gato");
 			setSize(800, 700);
 			setLayout(new FlowLayout());
 
@@ -301,8 +331,9 @@ public class Main {
 			formPanel.add(dobInLabel);
 			formPanel.add(dobInPanel);
 
-			JLabel genderLabel = new JLabel("Sexo [Macho/Fêmea]");
-			genderTextField = new JTextField(20);
+			JLabel genderLabel = new JLabel("Sexo");
+			genderTextField = new JComboBox<>(genders);
+			genderLabel.add(genderTextField);
 			formPanel.add(genderLabel);
 			formPanel.add(genderTextField);
 
@@ -340,9 +371,34 @@ public class Main {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// Lógica para tratar o evento do botão de cadastrar
-			Cat cat = criarCat();
-			System.out.println("1 - " + cat);
+			String singleCode = singleCodeTextField.getText();
 
+			for (Cat cat : cats) {
+				if (cat.getSingleCode().equals(singleCode)) {
+					imprimirError.exibirMensagemError("Código único já cadastrado.");
+					singleCodeTextField.setText("");
+					return;
+				}
+			}
+			if (!isNumber(singleCode) || singleCode.isEmpty()) {
+				imprimirError.exibirMensagemError("Código único inválido.");
+				return;
+			}
+
+			String name = nameTextField.getText();
+
+			if (name.isEmpty() || isNumber(name)) {
+				imprimirError.exibirMensagemError("Dados inválidos.");
+				return;
+			}
+
+			String quantityFood = quantityFoodTextField.getText();
+			if (!isNumber(quantityFood)) {
+				imprimirError.exibirMensagemError("Quantidade de ração inválida. Insira apenas números");
+				return;
+			}
+
+			Cat cat = criarCat();
 			cats.add(cat);
 
 			// ... lógica para cadastrar a adoção do gato pelo Adopter
@@ -355,7 +411,6 @@ public class Main {
 			nameTextField.setText("");
 			raceTextField.setText("");
 			surnameTextField.setText("");
-			genderTextField.setText("");
 			ageTextField.setText("");
 
 			quantityFoodTextField.setText("");
@@ -368,7 +423,7 @@ public class Main {
 			String name = nameTextField.getText();
 			String race = raceTextField.getText();
 			String surname = surnameTextField.getText();
-			String gender = genderTextField.getText();
+			String gender = (String) genderTextField.getSelectedItem();
 			String dayIn = (String) dayInComboBox.getSelectedItem();
 			String monthIn = (String) monthInComboBox.getSelectedItem();
 			String yearIn = (String) yearInComboBox.getSelectedItem();
@@ -384,6 +439,29 @@ public class Main {
 					exitDate, cpfAdopte);
 
 			return cat;
+		}
+
+	}
+
+	static class SobreWindow extends JFrame implements ActionListener {
+
+		public SobreWindow() {
+			setTitle("Cadastrar Gato");
+			setSize(1600, 900);
+
+			JPanel mainPanel = new JPanel();
+
+			mainPanel.add(new JLabel(new ImageIcon(
+					"C:\\Users\\Leu\\Documents\\códigos java diversos\\aps_v2\\Java-AdocaoDeGato\\core\\sobre.jpg")));
+
+			add(mainPanel);
+
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+
 		}
 
 	}
@@ -453,14 +531,11 @@ public class Main {
 					cat.setCpfAdopter(cpfAdopte);
 					cat.setExitDate(exitDate);
 					JOptionPane.showMessageDialog(frame, cat.toString());
-					System.out.println(cat);
 				} else {
 					JOptionPane.showMessageDialog(frame, "Adopter não encontrado");
-					System.out.println("Adotador não encontrado");
 				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "Gato não encontrado");
-				System.out.println("Gato não encontrado");
 			}
 		}
 	}
@@ -474,7 +549,6 @@ public class Main {
 			JOptionPane.showMessageDialog(frame, buscaAdopter.toString());
 		} else {
 			JOptionPane.showMessageDialog(frame, "Adotador não encontrado");
-			System.out.println("O usuário tentou consultar um adotador que não está registrado no sistema!");
 		}
 	}
 
@@ -486,20 +560,23 @@ public class Main {
 			JOptionPane.showMessageDialog(frame, buscaGato.toString());
 		} else {
 			JOptionPane.showMessageDialog(frame, "Gato não encontrado");
-			System.out.println("O usuário tentou consultar um gato que não está registrado no sistema!");
 		}
 	}
 
 	private static void relatorioCat() {
+
 		relatorio = CatMethods.relatorioCat(cats, relatorio);
 
+		if (relatorio.size() == 0) {
+			JOptionPane.showMessageDialog(frame, "Sem Gatos Cadastrados.");
+			return;
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Cat cat : relatorio) {
 			sb.append(cat.toString()).append("\n"); // Aqui, você pode ajustar o formato de exibição de acordo com os
 													// atributos do objeto Cat
 		}
 		JOptionPane.showMessageDialog(frame, sb.toString());
-		System.out.println(relatorio);
 
 	}
 
@@ -518,42 +595,42 @@ public class Main {
 		for (Cat cat : relatorio) {
 			if (cat.getFood().equals("Royal Canin Exigent")) {
 				RoyalCaninExigent += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Royal Canin Cat Premium Filhotes")) {
+			} else if (cat.getFood().equals("Royal Canin Cat Premium Filhotes")) {
 				RoyalCaninCatPremiumFilhotes += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Farmina N&D")) {
+			} else if (cat.getFood().equals("Farmina N&D")) {
 				FarminaND += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Premier Pet Golden Gatos Castrados")) {
+			} else if (cat.getFood().equals("Premier Pet Golden Gatos Castrados")) {
 				PremierPetGoldenGatosCastrados += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Purina ProPlan Trato Urinário")) {
+			} else if (cat.getFood().equals("Purina ProPlan Trato Urinário")) {
 				PurinaProPlanTratoUrinário += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("GranPlus Adultos")) {
+			} else if (cat.getFood().equals("GranPlus Adultos")) {
 				GranPlusAdultos += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Ração Biofresh Gatos")) {
+			} else if (cat.getFood().equals("Ração Biofresh Gatos")) {
 				RaçãoBiofreshGatos += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Nutrilus Pro gatos")) {
+			} else if (cat.getFood().equals("Nutrilus Pro gatos")) {
 				NutrilusProgatos += Double.parseDouble(cat.getQuantityFood());
-			}
-			if (cat.getFood().equals("Guabi Natural gato adulto castrado")) {
+			} else if (cat.getFood().equals("Guabi Natural gato adulto castrado")) {
 				GuabiNaturalgatoadultocastrado += Double.parseDouble(cat.getQuantityFood());
 			}
 		}
 		String formated = "Royal Canin Exigent: " + RoyalCaninExigent + "\nRoyal Canin Cat Premium Filhotes: "
-				+ RoyalCaninCatPremiumFilhotes +
-				"\nFarmina N&D: " + FarminaND + "\nPremier Pet Golden Gatos Castrados: "
-				+ PremierPetGoldenGatosCastrados +
-				"\nPurina ProPlan Trato Urinário: " + PurinaProPlanTratoUrinário + "\nGranPlus Adultos: "
-				+ GranPlusAdultos + "\nRação Biofresh Gatos: " + RaçãoBiofreshGatos +
-				"\nNutrilus Pro gatos: " + NutrilusProgatos + "\nGuabi Natural gato adulto castrado: "
-				+ NutrilusProgatos;
+				+ RoyalCaninCatPremiumFilhotes + "\nFarmina N&D: " + FarminaND
+				+ "\nPremier Pet Golden Gatos Castrados: " + PremierPetGoldenGatosCastrados
+				+ "\nPurina ProPlan Trato Urinário: " + PurinaProPlanTratoUrinário + "\nGranPlus Adultos: "
+				+ GranPlusAdultos + "\nRação Biofresh Gatos: " + RaçãoBiofreshGatos + "\nNutrilus Pro gatos: "
+				+ NutrilusProgatos + "\nGuabi Natural gato adulto castrado: " + NutrilusProgatos;
 
 		JOptionPane.showMessageDialog(frame, formated);
 
 	}
+
+	public static boolean isNumber(String str) {
+		for (char c : str.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

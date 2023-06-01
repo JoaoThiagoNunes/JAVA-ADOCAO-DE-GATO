@@ -49,7 +49,13 @@ public class Adopter {
 	}
 	@Override
 	public String toString() {
-		return "Adotante [cpf=" + cpf + ", name=" + name + ", endereco=" + endereco + ", telefone=" + telefone + "]";
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Adotante Details:\n");
+	    sb.append("CPF: ").append(cpf).append("\n");
+	    sb.append("Name: ").append(name).append("\n");
+	    sb.append("Endereco: ").append(endereco).append("\n");
+	    sb.append("Telefone: ").append(telefone).append("\n");
+	    return sb.toString();
 	}
 
 	

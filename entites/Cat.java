@@ -106,12 +106,23 @@ public class Cat {
 
 	@Override
 	public String toString() {
-		return "Cat [singleCode=" + singleCode + ", name=" + name + ", race=" + race + ", surname=" + surname
-				+ ", gender=" + gender + ", entryDate=" + entryDate + ", age=" + age + ", food=" + food
-				+ ", quantityFood=" + quantityFood + ", weight=" + weight + ", exitDate=" + exitDate + ", cpfAdopter="
-				+ cpfAdopter + "]";
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("Cat Details:\n");
+	    sb.append("Single Code: ").append(singleCode).append("\n");
+	    sb.append("Name: ").append(name).append("\n");
+	    sb.append("Race: ").append(race).append("\n");
+	    sb.append("Surname: ").append(surname).append("\n");
+	    sb.append("Gender: ").append(gender).append("\n");
+	    sb.append("Entry Date: ").append(entryDate).append("\n");
+	    sb.append("Age: ").append(age).append("\n");
+	    sb.append("Food: ").append(food).append("\n");
+	    sb.append("Quantity of Food: ").append(quantityFood).append("\n");
+	    sb.append("Weight: ").append(weight).append("\n");
+	    sb.append("Exit Date: ").append(exitDate).append("\n");
+	    sb.append("CPF Adopter: ").append(cpfAdopter).append("\n");
+	    return sb.toString();
 	}
-	
+
 	
 	
 	
